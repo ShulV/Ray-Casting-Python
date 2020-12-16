@@ -10,18 +10,24 @@ import wx
 import os
 
 
-
-
 class MyFrame(wx.Frame):
     """ We simply derive a new class of Frame. """
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(WIDTH, HEIGHT))
-        self.btn_play = wx.Button(self, label="Играть", size=(100, 100), pos=(200, 325))
-        self.Bind(wx.EVT_BUTTON, self.OnPlay, self.btn_play)
+
+
+class ExamplePanel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        # A button
+        self.btn_play = wx.Button(self, wx.ID_OK, 'Играть', (int(WIDTH/2)-100, int(HEIGHT/2)-70), (200, 70), )
+        self.Bind(wx.EVT_BUTTON, self.on_play, self.btn_play)
         self.Show(True)
         self.Centre()
 
-    def OnPlay(self, event):
+    def on_play(self, event):
+        global frame
+        frame.Show(False)
         run_game = True
         pygame.init()
         clock = pygame.time.Clock()  # установка кадров секунду
@@ -35,11 +41,13 @@ class MyFrame(wx.Frame):
                 if event.type == pygame.QUIT:  # выход по нажатию крестика
                     pygame.quit()  # остановка pygame
                     run_game = False
+                    frame.Show(True)
                     return
                     # sys.exit()  # выход из программы
             if not player.movement(distance_to_wall):
                 pygame.quit()  # остановка pygame
                 run_game = False
+                frame.Show(True)
                 return
 
             sc.fill(color=BLACK)  # создание окна с черным фоном
@@ -54,6 +62,8 @@ class MyFrame(wx.Frame):
 
 app = wx.App(False)
 frame = MyFrame(None, 'Игра \"Лабиринт\"')
+panel = ExamplePanel(frame)
+frame.Show()
 app.MainLoop()
 
 
