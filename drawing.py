@@ -1,7 +1,7 @@
 import pygame
 from settings import *
+from map import map_obj
 from ray_cating import ray_casting
-from map import mini_map
 
 
 class Drawing:
@@ -32,6 +32,6 @@ class Drawing:
         pygame.draw.line(self.sc_map, PURPLE, (map_x, map_y), (map_x + 12 * math.cos(player.angle),
                                                  map_y + 12 * math.sin(player.angle)), 2)
         pygame.draw.circle(self.sc_map, GREEN, (int(map_x), int(map_y)), 5)
-        for x, y in mini_map:
+        for x, y in map_obj.mini_map:
             pygame.draw.rect(self.sc_map, WHITE, (x, y, MAP_TILE, MAP_TILE))
         self.sc.blit(self.sc_map, MAP_POS)

@@ -3,7 +3,7 @@ import sys
 from math import cos, sin
 from settings import *
 from player import Player
-from map import world_map
+from map import Map
 from drawing import Drawing
 from ray_cating import ray_casting
 import wx

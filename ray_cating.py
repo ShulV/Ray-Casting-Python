@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from map import world_map
+from map import map_obj
 
 
 def mapping(a, b):
@@ -22,7 +22,7 @@ def ray_casting(sc, player_pos, player_angle):
         for i in range(0, WIDTH, TILE):
             depth_v = (x - ox) / cos_a
             y = oy + depth_v * sin_a
-            if mapping(x + dx, y) in world_map:
+            if mapping(x + dx, y) in map_obj.world_map:
                 break
             x += dx * TILE
 
@@ -31,7 +31,7 @@ def ray_casting(sc, player_pos, player_angle):
         for i in range(0, HEIGHT, TILE):
             depth_h = (y - oy) / sin_a
             x = ox + depth_h * cos_a
-            if mapping(x, y + dy) in world_map:
+            if mapping(x, y + dy) in map_obj.world_map:
                 break
             y += dy * TILE
 
