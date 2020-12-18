@@ -2,6 +2,7 @@ from settings import *
 
 text_map_name = 'Text_maps/map1.txt'
 
+
 class Map:
     def __init__(self):
         self.world_map = set()

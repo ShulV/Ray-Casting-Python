@@ -10,24 +10,24 @@ import wx
 import os
 
 
-class MyFrame(wx.Frame):
+class GameFrame(wx.Frame):
     """ We simply derive a new class of Frame. """
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(WIDTH, HEIGHT))
 
 
-class ExamplePanel(wx.Panel):
+class GamePanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         # A button
-        self.btn_play = wx.Button(self, wx.ID_OK, 'Играть', (int(WIDTH/2)-100, int(HEIGHT/2)-70), (200, 70), )
-        self.Bind(wx.EVT_BUTTON, self.on_play, self.btn_play)
+        self.btn_levels = wx.Button(self, wx.ID_OK, 'Уровни', (int(WIDTH/2)-100, int(HEIGHT/2)-70), (200, 70), )
+        self.Bind(wx.EVT_BUTTON, self.on_levels, self.btn_levels)
         self.Show(True)
         self.Centre()
 
-    def on_play(self, event):
-        global frame
-        frame.Show(False)
+    def on_levels(self, event):
+        global main_frame
+        main_frame.Show(False)
         run_game = True
         pygame.init()
         clock = pygame.time.Clock()  # установка кадров секунду
@@ -41,13 +41,13 @@ class ExamplePanel(wx.Panel):
                 if event.type == pygame.QUIT:  # выход по нажатию крестика
                     pygame.quit()  # остановка pygame
                     run_game = False
-                    frame.Show(True)
+                    main_frame.Show(True)
                     return
                     # sys.exit()  # выход из программы
             if not player.movement(distance_to_wall):
                 pygame.quit()  # остановка pygame
                 run_game = False
-                frame.Show(True)
+                main_frame.Show(True)
                 return
 
             sc.fill(color=BLACK)  # создание окна с черным фоном
@@ -61,9 +61,9 @@ class ExamplePanel(wx.Panel):
 
 
 app = wx.App(False)
-frame = MyFrame(None, 'Игра \"Лабиринт\"')
-panel = ExamplePanel(frame)
-frame.Show()
+main_frame = GameFrame(None, 'Игра \"Лабиринт\"')
+main_panel = GamePanel(main_frame)
+main_frame.Show()
 app.MainLoop()
 
 
