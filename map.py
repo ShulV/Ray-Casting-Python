@@ -20,9 +20,11 @@ class Map:
         ]
 
     def load_text_map(self, filename):
-        with open(filename, 'r') as file:
+        with open(filename, 'r', encoding='utf8') as file:
             for line in enumerate(file):
-                self.text_map[line[0]] = line[1][:-1]
+                self.text_map[line[0]] = line[1][0:12]
+        for x in self.text_map:
+            print(x)
 
     def fill_points_of_maps(self):
         for j, row in enumerate(self.text_map):
@@ -30,6 +32,7 @@ class Map:
                 if char == 'W':
                     self.world_map.add((i * TILE, j * TILE))
                     self.mini_map.add((i * MAP_TILE, j * MAP_TILE))
+
 
 
 map_obj = Map()

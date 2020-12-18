@@ -3,7 +3,7 @@ import sys
 from math import cos, sin
 from settings import *
 from player import Player
-from map import Map
+from map import map_obj
 from drawing import Drawing
 from ray_cating import ray_casting
 import wx
@@ -20,14 +20,14 @@ class LevelsPanel(wx.Panel):
     def __init__(self, parent, quantity_btn):
         wx.Panel.__init__(self, parent)
         # A button
-        self.btn_back = wx.Button(self, label='Назад', pos=(WIDTH - 200, HEIGHT - 120), size=(150, 50), )
+        self.btn_back = wx.Button(self, label='Назад', pos=(WIDTH - 200, HEIGHT - 120), size=(150, 50))
         self.Bind(wx.EVT_BUTTON, self.on_back, self.btn_back)
         self.btn_levels = list()
         for btn_num in range(0, quantity_btn):
             pos = (70 + btn_num * 140, 70)
-            btn = wx.Button(self, label=str(btn_num+1), pos=pos, size=(70, 70), )
+            btn = wx.Button(self, id=btn_num, label=str(btn_num+1), pos=pos, size=(70, 70))
+            self.Bind(wx.EVT_BUTTON, self.on_play, btn, id=btn_num+1)
             self.btn_levels.append(btn)
-            self.Bind(wx.EVT_BUTTON, self.on_play, self.btn_levels[btn_num])
 
     def on_back(self, event):
         global main_frame, levels_frame
@@ -35,6 +35,10 @@ class LevelsPanel(wx.Panel):
         main_frame.Show(True)
 
     def on_play(self, event):
+        btn_name = event.GetEventObject().GetLabel()
+        filename = f'Text_maps/map{btn_name}.txt'
+        map_obj.load_text_map(filename)
+        map_obj.fill_points_of_maps()
         global levels_frame
         levels_frame.Show(False)
         run_game = True
