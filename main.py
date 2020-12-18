@@ -10,24 +10,33 @@ import wx
 import os
 
 
-class GameFrame(wx.Frame):
+class Frame(wx.Frame):
     """ We simply derive a new class of Frame. """
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(WIDTH, HEIGHT))
 
 
-class GamePanel(wx.Panel):
-    def __init__(self, parent):
+class LevelsPanel(wx.Panel):
+    def __init__(self, parent, quantity_btn):
         wx.Panel.__init__(self, parent)
         # A button
-        self.btn_levels = wx.Button(self, wx.ID_OK, 'Уровни', (int(WIDTH/2)-100, int(HEIGHT/2)-70), (200, 70), )
-        self.Bind(wx.EVT_BUTTON, self.on_levels, self.btn_levels)
-        self.Show(True)
-        self.Centre()
+        self.btn_back = wx.Button(self, label='Назад', pos=(WIDTH - 200, HEIGHT - 120), size=(150, 50), )
+        self.Bind(wx.EVT_BUTTON, self.on_back, self.btn_back)
+        self.btn_levels = list()
+        for btn_num in range(0, quantity_btn):
+            pos = (70 + btn_num * 140, 70)
+            btn = wx.Button(self, label=str(btn_num+1), pos=pos, size=(70, 70), )
+            self.btn_levels.append(btn)
+            self.Bind(wx.EVT_BUTTON, self.on_play, self.btn_levels[btn_num])
 
-    def on_levels(self, event):
-        global main_frame
-        main_frame.Show(False)
+    def on_back(self, event):
+        global main_frame, levels_frame
+        levels_frame.Show(False)
+        main_frame.Show(True)
+
+    def on_play(self, event):
+        global levels_frame
+        levels_frame.Show(False)
         run_game = True
         pygame.init()
         clock = pygame.time.Clock()  # установка кадров секунду
@@ -60,10 +69,25 @@ class GamePanel(wx.Panel):
             clock.tick(FPS)
 
 
+class MainPanel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        self.btn_levels = wx.Button(self, wx.ID_OK, 'Уровни', (int(WIDTH / 2) - 100, int(HEIGHT / 2) - 70), (200, 70), )
+        self.Bind(wx.EVT_BUTTON, self.on_levels, self.btn_levels)
+
+    def on_levels(self, event):
+        main_frame.Show(False)
+        levels_frame.Show(True)
+        levels_frame.Centre()
+
+
 app = wx.App(False)
-main_frame = GameFrame(None, 'Игра \"Лабиринт\"')
-main_panel = GamePanel(main_frame)
+main_frame = Frame(None, 'Игра \"Лабиринт\"')
+main_panel = MainPanel(main_frame)
+levels_frame = Frame(None, 'Игра \"Лабиринт\": уровни')
+levels_panel = LevelsPanel(levels_frame, 5)
 main_frame.Show()
+main_frame.Centre()
 app.MainLoop()
 
 
