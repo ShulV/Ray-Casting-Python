@@ -8,6 +8,7 @@ class Map:
         self.world_map = set()
         self.mini_map = set()
         # w - wall [8, 12] blocks
+        # value for example (not used)
         self.text_map = [
             'WWWWWWWWWWWW',
             'W...W...W..W',
@@ -27,12 +28,13 @@ class Map:
             print(x)
 
     def fill_points_of_maps(self):
+        self.world_map.clear()
+        self.mini_map.clear()
         for j, row in enumerate(self.text_map):
             for i, char in enumerate(row):
                 if char == 'W':
                     self.world_map.add((i * TILE, j * TILE))
                     self.mini_map.add((i * MAP_TILE, j * MAP_TILE))
-
 
 
 map_obj = Map()
