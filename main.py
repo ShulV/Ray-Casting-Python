@@ -14,6 +14,11 @@ class Frame(wx.Frame):
     """ We simply derive a new class of Frame. """
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(WIDTH, HEIGHT))
+        self.Bind(wx.EVT_CLOSE, self.on_close, self)
+
+    def on_close(self, event):
+        self.Show(False)
+        sys.exit()
 
 
 class LevelsPanel(wx.Panel):
