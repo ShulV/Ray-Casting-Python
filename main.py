@@ -12,9 +12,32 @@ import os
 
 class Frame(wx.Frame):
     """ We simply derive a new class of Frame. """
+
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(WIDTH, HEIGHT))
         self.Bind(wx.EVT_CLOSE, self.on_close, self)
+
+        # Setting up the menu.
+        filemenu = wx.Menu()
+        menuAbout = filemenu.Append(wx.ID_ABOUT, "&О программе", " Information about this program")
+
+        # Creating the menubar.
+        menuBar = wx.MenuBar()
+        menuBar.Append(filemenu, "&Справка")  # Adding the "filemenu" to the MenuBar
+        self.SetMenuBar(menuBar)  # Adding the MenuBar to the Frame content.
+        # Events.
+        self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
+
+    def OnAbout(self, e):
+        # Create a message dialog box
+        about_text = "Программа представляет собой игру 'Лабиринт', состоящую из 5 уровней.\n" \
+                     "Управление осуществляется с помощью клавиш W (движение вперёд) и стрелок влево и вправо (для " \
+                     "поворота).\n" \
+                     "Уровень считается пройденным, если игрок вышел за пределы лабиринта\n" \
+                     "В данной версии игры не предусмотрено сохранение данных, если вы выйдете, прогресс обнулится."
+        dlg = wx.MessageDialog(self, caption='О программе', message=about_text, style=wx.OK,)
+        dlg.ShowModal()  # Shows it
+        dlg.Destroy()  # finally destroy it when finished.
 
     def on_close(self, event):
         self.Show(False)
@@ -30,8 +53,8 @@ class LevelsPanel(wx.Panel):
         self.btn_levels = list()
         for btn_num in range(0, quantity_btn):
             pos = (70 + btn_num * 140, 70)
-            btn = wx.Button(self, id=btn_num, label=str(btn_num+1), pos=pos, size=(70, 70))
-            self.Bind(wx.EVT_BUTTON, self.on_play, btn, id=btn_num+1)
+            btn = wx.Button(self, id=btn_num, label=str(btn_num + 1), pos=pos, size=(70, 70))
+            self.Bind(wx.EVT_BUTTON, self.on_play, btn, id=btn_num + 1)
             self.btn_levels.append(btn)
 
     def on_back(self, event):
@@ -99,8 +122,4 @@ main_frame.Show()
 main_frame.Centre()
 app.MainLoop()
 
-
 # основной цикл
-
-
-
